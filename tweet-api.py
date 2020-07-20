@@ -1,3 +1,6 @@
+from flask import *
+import tweepy
+
 app = Flask(__name__)
 
 
@@ -7,7 +10,7 @@ def index():
     return jsonify({"success":True,"message":"Hello World!"})
 
 @app.route("/get-tweet/")
-def get_tweet(username):
+def get_tweet():
 
     try:
         consumer_key = request.args.get("consumer_key")
@@ -22,7 +25,7 @@ def get_tweet(username):
         api = tweepy.API(auth)
 
 
-        tweets = tweepy_api.user_timeline(screen_name=username)
+        tweets = api.user_timeline(screen_name=username)
         data=[]
         for t in tweets:
             data.append([{'tweet': t.text,
@@ -134,7 +137,7 @@ def get_friends():
         return jsonify({"success":True,"data":data})
     except:
         return jsonify({"success": False})
-@app.route("/get-followers/")
+@app.route("/get-follower/")
 def get_followers():
     try:
         consumer_key = request.args.get("consumer_key")
@@ -158,7 +161,7 @@ def get_followers():
         data=[]
         for follower in api.followers(screen_name):
             data.append({"follower":follower.screen_name})
-            return jsonify({"success":True,"data":data})
+        return jsonify({"success":True,"data":data})
     except:
         return jsonify({"success": False})
 
@@ -189,7 +192,7 @@ def get_retweets():
         data=[]
         for retweet in retweets_list:
             data.append({"retweet":retweet.user.screen_name})
-            return jsonify({"sucess":True,"data":data})
+        return jsonify({"sucess":True,"data":data})
     except:
         return jsonify({"success": False})
 @app.route("/post-retweet/")
@@ -267,7 +270,6 @@ def get_user():
         return jsonify({"success":True,"data":data})
     except:
         return jsonify({"success": False})
-
 
 if __name__ == "main":
     app.run(debug=True)
