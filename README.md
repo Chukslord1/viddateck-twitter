@@ -108,6 +108,6 @@ Get all account transactions
     "created_at": "",
     "username": "",
     "headshot_url": "",
-    "transactions": []
+   
 }
 ```
